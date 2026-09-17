@@ -1,0 +1,221 @@
+{
+  "config": {
+    "businessName": "Annapurna Homestyle Tiffins",
+    "ownerName": "Sunita Sharma",
+    "ownerPhone": "+91 98200 54321",
+    "currency": "₹",
+    "deliverySchedule": "Monday to Friday (Lunch 12:30 PM - 1:30 PM)",
+    "address": "Shop 4, Sunrise Heights, Sector 14, Navi Mumbai",
+    "upiId": "annapurna.tiffins@okhdfcbank"
+  },
+  "plans": [
+    {
+      "id": "plan_classic_veg",
+      "name": "Classic Veg Thali",
+      "description": "3 Whole-wheat Phulkas, Dal Tadka, Seasonal Sabzi, Basmati Rice, Salad & Pickle",
+      "monthlyPrice": 2800,
+      "dietary": "Pure Veg",
+      "isPopular": true
+    },
+    {
+      "id": "plan_deluxe_homestyle",
+      "name": "Deluxe Homestyle Feast",
+      "description": "4 Ghee Phulkas, Paneer Special, Dry Veg Sabzi, Dal Fry, Jeera Rice, Boondi Raita & Sweet",
+      "monthlyPrice": 3500,
+      "dietary": "Pure Veg",
+      "isPopular": false
+    },
+    {
+      "id": "plan_jain_satvik",
+      "name": "Jain Satvik Meal",
+      "description": "Pure Satvik without Onion or Garlic. 4 Phulkas, Kadhi/Dal, Green Veggie, Khichdi/Rice, Salad",
+      "monthlyPrice": 3000,
+      "dietary": "Jain",
+      "isPopular": false
+    },
+    {
+      "id": "plan_high_protein_nonveg",
+      "name": "Executive High-Protein Non-Veg",
+      "description": "Fresh Chicken Curry or Egg Curry (3 days/wk) + Rich Dal, 4 Phulkas, Steamed Rice & Sprouts",
+      "monthlyPrice": 4200,
+      "dietary": "Non-Veg",
+      "isPopular": false
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust_101",
+      "name": "Aarav Patel",
+      "phone": "9820198201",
+      "email": "aarav.patel@techcorp.in",
+      "address": "Flat 402, Lotus Tower, Mindspace IT Park, Airoli",
+      "planId": "plan_classic_veg",
+      "planName": "Classic Veg Thali",
+      "planMonthlyPrice": 2800,
+      "dietary": "Pure Veg",
+      "deliverySlot": "12:30 PM",
+      "notes": "Please keep less oil. Ring doorbell twice.",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-30",
+      "pauses": [
+        {
+          "id": "pause_101_1",
+          "startDate": "2026-09-11",
+          "endDate": "2026-09-13",
+          "reason": "Office Conference in Pune",
+          "createdAt": "2026-09-02T10:00:00Z"
+        }
+      ],
+      "payments": {
+        "2026-09": {
+          "status": "paid",
+          "method": "Cash on Delivery",
+          "amount": 2672.73,
+          "transactionId": "TXN_MU5DA31A_2526",
+          "receiptNumber": "REC-202609-8201",
+          "notes": "Cash received during lunch delivery (Collected by Sunita Sharma)",
+          "paidAt": "2026-09-17T10:08:36.700Z"
+        }
+      }
+    },
+    {
+      "id": "cust_102",
+      "name": "Priya Sundaram",
+      "phone": "9833445566",
+      "email": "priya.sundaram@gmail.com",
+      "address": "B-12, Green Acres, Vashi Sector 9",
+      "planId": "plan_deluxe_homestyle",
+      "planName": "Deluxe Homestyle Feast",
+      "planMonthlyPrice": 3500,
+      "dietary": "Pure Veg",
+      "deliverySlot": "12:45 PM",
+      "notes": "Extra spicy sambar or dal if possible.",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-30",
+      "pauses": [
+        {
+          "id": "pause_102_1",
+          "startDate": "2026-09-17",
+          "endDate": "2026-09-19",
+          "reason": "Ganesh Chaturthi Festivities at native place",
+          "createdAt": "2026-09-10T14:30:00Z"
+        }
+      ],
+      "payments": {
+        "2026-09": {
+          "status": "pending",
+          "method": null,
+          "paidAt": null
+        }
+      }
+    },
+    {
+      "id": "cust_103",
+      "name": "Kavita Jha",
+      "phone": "9769012345",
+      "email": "kavita.jha@fintech.co",
+      "address": "C-701, Odyssey Heights, Palm Beach Road, Sanpada",
+      "planId": "plan_jain_satvik",
+      "planName": "Jain Satvik Meal",
+      "planMonthlyPrice": 3000,
+      "dietary": "Jain",
+      "deliverySlot": "1:00 PM",
+      "notes": "Strictly Jain. No root vegetables, no garlic, no onion.",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-30",
+      "pauses": [],
+      "payments": {
+        "2026-09": {
+          "status": "paid",
+          "method": "UPI",
+          "paidAt": "2026-09-01T11:20:00Z"
+        }
+      }
+    },
+    {
+      "id": "cust_104",
+      "name": "Rohan Mehra",
+      "phone": "9920556677",
+      "email": "rohan.mehra@startup.io",
+      "address": "Cabin 14, WeWork Cybercity, Turbhe",
+      "planId": "plan_high_protein_nonveg",
+      "planName": "Executive High-Protein Non-Veg",
+      "planMonthlyPrice": 4200,
+      "dietary": "Non-Veg",
+      "deliverySlot": "1:15 PM",
+      "notes": "Leave with reception security if on call.",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-30",
+      "pauses": [
+        {
+          "id": "pause_104_1",
+          "startDate": "2026-09-20",
+          "endDate": "2026-09-21",
+          "reason": "Work from Home (Navi Mumbai)",
+          "createdAt": "2026-09-12T09:15:00Z"
+        }
+      ],
+      "payments": {
+        "2026-09": {
+          "status": "pending",
+          "method": null,
+          "paidAt": null
+        }
+      }
+    },
+    {
+      "id": "cust_105",
+      "name": "Dr. Sneha Kulkarni",
+      "phone": "9821098765",
+      "email": "dr.sneha@lifecare.org",
+      "address": "Consulting Room 3, Apollo Clinic, Seawoods",
+      "planId": "plan_classic_veg",
+      "planName": "Classic Veg Thali",
+      "planMonthlyPrice": 2800,
+      "dietary": "Pure Veg",
+      "deliverySlot": "12:30 PM",
+      "notes": "Delivery strictly before 1:00 PM (OPD hours).",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-30",
+      "pauses": [
+        {
+          "id": "pause_105_1",
+          "startDate": "2026-09-17",
+          "endDate": "2026-09-17",
+          "reason": "Hospital Emergency Surgery Shift",
+          "createdAt": "2026-09-17T07:00:00Z"
+        }
+      ],
+      "payments": {
+        "2026-09": {
+          "status": "pending",
+          "method": null,
+          "paidAt": null
+        }
+      }
+    },
+    {
+      "id": "cust_106",
+      "name": "Manish Verma",
+      "phone": "9167234567",
+      "email": "manish.v@consulting.com",
+      "address": "A-204, Sea Queen Bay, Kharghar Sector 10",
+      "planId": "plan_deluxe_homestyle",
+      "planName": "Deluxe Homestyle Feast",
+      "planMonthlyPrice": 3500,
+      "dietary": "Pure Veg",
+      "deliverySlot": "12:45 PM",
+      "notes": "Phulkas without ghee please.",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-30",
+      "pauses": [],
+      "payments": {
+        "2026-09": {
+          "status": "pending",
+          "method": null,
+          "paidAt": null
+        }
+      }
+    }
+  ]
+}

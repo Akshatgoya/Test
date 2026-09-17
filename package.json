@@ -1,0 +1,11 @@
+{
+  "name": "tiffin-flow",
+  "version": "1.0.0",
+  "description": "Home-Style Tiffin Service Management & Pro-Rated Billing Platform",
+  "scripts": {
+    "test": "node server/testBilling.js",
+    "start:server": "node server/server.js",
+    "dev:client": "npm --prefix client run dev",
+    "build:client": "npm --prefix client run build"
+  }
+}
