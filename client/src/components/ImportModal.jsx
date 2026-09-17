@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { api } from '../utils/api';
+import { X, UploadCloud } from 'lucide-react';
+import { api } from '../utils/api.js';
 
 const SAMPLE_MESSY_CSV = `Name,Phone,StartDate,Address,Plan
 Rishi Kapoor,+91 98112-33445,01/09/2026,"Flat 12B, Sea Palm, Vashi",Classic Veg
@@ -63,8 +64,8 @@ export default function ImportModal({ isOpen, onClose, onImportSuccess }) {
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content modal-extra-wide" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-card modal-extra-wide" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="modal-header-title">
             <span className="modal-icon">📥</span>
@@ -75,15 +76,19 @@ export default function ImportModal({ isOpen, onClose, onImportSuccess }) {
               </p>
             </div>
           </div>
-          <button className="close-btn" onClick={onClose}>&times;</button>
+          <button className="btn-icon" onClick={onClose} title="Close">
+            <X size={20} />
+          </button>
         </div>
 
-        {error && (
-          <div className="alert-banner alert-error">
-            <span>{error}</span>
-            <button className="alert-close" onClick={() => setError(null)}>&times;</button>
-          </div>
-        )}
+        <div className="modal-body">
+          {error && (
+            <div className="alert-banner alert-error">
+              <span>{error}</span>
+              <button className="alert-close" onClick={() => setError(null)}>&times;</button>
+            </div>
+          )}
+
 
         <div className="import-container">
           {/* Top Panel: Input & Control */}
@@ -282,6 +287,7 @@ export default function ImportModal({ isOpen, onClose, onImportSuccess }) {
               )}
             </div>
           )}
+          </div>
         </div>
 
         <div className="modal-footer">

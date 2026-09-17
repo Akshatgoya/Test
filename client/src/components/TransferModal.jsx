@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 import { api } from '../utils/api';
 
 export default function TransferModal({ isOpen, onClose, customer, onTransferSuccess }) {
@@ -95,8 +96,8 @@ export default function TransferModal({ isOpen, onClose, customer, onTransferSuc
   if (!isOpen || !customer) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content modal-wide" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-card modal-extra-wide" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="modal-header-title">
             <span className="modal-icon">🔄</span>
@@ -107,18 +108,21 @@ export default function TransferModal({ isOpen, onClose, customer, onTransferSuc
               </p>
             </div>
           </div>
-          <button className="close-btn" onClick={onClose}>&times;</button>
+          <button className="btn-icon" onClick={onClose} title="Close">
+            <X size={20} />
+          </button>
         </div>
 
-        {error && (
-          <div className="alert-banner alert-error">
-            <span>{error}</span>
-            <button className="alert-close" onClick={() => setError(null)}>&times;</button>
-          </div>
-        )}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+          <div className="modal-body">
+            {error && (
+              <div className="alert-banner alert-error">
+                <span>{error}</span>
+                <button type="button" className="alert-close" onClick={() => setError(null)}>&times;</button>
+              </div>
+            )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="transfer-grid">
+            <div className="transfer-grid">
             {/* Left Column: Source & Recipient details */}
             <div className="transfer-form-col">
               {/* Source Subscriber Banner */}
@@ -308,6 +312,7 @@ export default function TransferModal({ isOpen, onClose, customer, onTransferSuc
                 </ul>
               </div>
             </div>
+          </div>
           </div>
 
           <div className="modal-footer">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../utils/api';
+import { X, Clock } from 'lucide-react';
+import { api } from '../utils/api.js';
 
 export default function ClockOutboxModal({ isOpen, onClose, onDateChanged }) {
   const [currentDate, setCurrentDate] = useState('2026-09-17');
@@ -113,8 +114,8 @@ export default function ClockOutboxModal({ isOpen, onClose, onDateChanged }) {
   const uniqueDates = Array.from(new Set(outbox.map(m => m.date)));
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content modal-extra-wide" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-card modal-extra-wide" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="modal-header-title">
             <span className="modal-icon">⏰</span>
@@ -125,15 +126,19 @@ export default function ClockOutboxModal({ isOpen, onClose, onDateChanged }) {
               </p>
             </div>
           </div>
-          <button className="close-btn" onClick={onClose}>&times;</button>
+          <button className="btn-icon" onClick={onClose} title="Close">
+            <X size={20} />
+          </button>
         </div>
 
-        {statusMessage && (
-          <div className={`alert-banner ${statusMessage.type === 'error' ? 'alert-error' : (statusMessage.type === 'info' ? 'alert-info' : 'alert-success')}`}>
-            <span>{statusMessage.text}</span>
-            <button className="alert-close" onClick={() => setStatusMessage(null)}>&times;</button>
-          </div>
-        )}
+        <div className="modal-body">
+          {statusMessage && (
+            <div className={`alert-banner ${statusMessage.type === 'error' ? 'alert-error' : (statusMessage.type === 'info' ? 'alert-info' : 'alert-success')}`}>
+              <span>{statusMessage.text}</span>
+              <button className="alert-close" onClick={() => setStatusMessage(null)}>&times;</button>
+            </div>
+          )}
+
 
         <div className="clock-dashboard">
           {/* Clock Control Panel */}
@@ -290,6 +295,7 @@ export default function ClockOutboxModal({ isOpen, onClose, onDateChanged }) {
             </div>
           </div>
         </div>
+        </div>
 
         <div className="modal-footer">
           <button className="btn btn-secondary" onClick={onClose}>
@@ -300,3 +306,4 @@ export default function ClockOutboxModal({ isOpen, onClose, onDateChanged }) {
     </div>
   );
 }
+
