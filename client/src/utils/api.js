@@ -149,5 +149,81 @@ export const api = {
     const res = await fetch(`${BASE_URL}/dispatch/today${query}`);
     if (!res.ok) throw new Error('Failed to load kitchen dispatch sheet');
     return res.json();
+  },
+
+  // Level 1 — T1: Clock & Morning Notifications
+  getClock: async () => {
+    const res = await fetch(`${BASE_URL}/clock`);
+    if (!res.ok) throw new Error('Failed to fetch system clock');
+    return res.json();
+  },
+
+  advanceClock: async (data = {}) => {
+    const res = await fetch(`${BASE_URL}/clock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to advance clock');
+    }
+    return res.json();
+  },
+
+  getOutbox: async (params = {}) => {
+    const query = new URLSearchParams();
+    if (params.date) query.append('date', params.date);
+    if (params.customerId) query.append('customerId', params.customerId);
+    const res = await fetch(`${BASE_URL}/outbox?${query.toString()}`);
+    if (!res.ok) throw new Error('Failed to load outbox');
+    return res.json();
+  },
+
+  clearOutbox: async () => {
+    const res = await fetch(`${BASE_URL}/outbox`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Failed to clear outbox');
+    return res.json();
+  },
+
+  // Level 2 — T6: Subscription Transfer & Split Billing
+  transferSubscription: async (customerId, transferData) => {
+    const res = await fetch(`${BASE_URL}/subscriptions/${customerId}/transfer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(transferData)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to transfer subscription');
+    }
+    return res.json();
+  },
+
+  getTransferPreview: async (customerId, effectiveDate) => {
+    const res = await fetch(`${BASE_URL}/subscriptions/${customerId}/transfer-preview?effectiveDate=${effectiveDate}`);
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to generate transfer preview');
+    }
+    return res.json();
+  },
+
+  // Level 3 — T4: Messy Data Importer
+  importData: async (payload) => {
+    const isString = typeof payload === 'string';
+    const res = await fetch(`${BASE_URL}/import`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': isString ? 'text/plain' : 'application/json'
+      },
+      body: isString ? payload : JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to import data');
+    }
+    return res.json();
   }
 };
+

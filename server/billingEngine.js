@@ -284,3 +284,57 @@ export function calculateCustomerMonthlyBill(customer, year, month, todayDateStr
     calendarDays
   };
 }
+
+/**
+ * Calculates mid-cycle subscription transfer split billing.
+ * 
+ * Rules:
+ * 1. The original plan and cycle carry over to the target customer.
+ * 2. Source customer is billed strictly for weekdays served prior to the transfer effective date.
+ * 3. Target customer is billed strictly for weekdays served from the effective date onward.
+ * 4. Sum of weekdays served and bills equals the total plan cycle invariant.
+ */
+export function calculateTransferSplit(sourceCustomer, targetCustomer, year, month) {
+  const sourceBill = calculateCustomerMonthlyBill(sourceCustomer, year, month);
+  const targetBill = calculateCustomerMonthlyBill(targetCustomer, year, month);
+
+  const totalDeliveredWeekdays = sourceBill.deliveredWeekdaysCount + targetBill.deliveredWeekdaysCount;
+  const totalBilled = Math.round((sourceBill.billedAmount + targetBill.billedAmount) * 100) / 100;
+  const totalSavings = Math.round((sourceBill.customerSavings + targetBill.customerSavings) * 100) / 100;
+
+  return {
+    billingMonth: `${year}-${String(month).padStart(2, '0')}`,
+    monthlyPlanPrice: sourceBill.monthlyPlanPrice,
+    dailyRate: sourceBill.dailyRate,
+    totalMonthWeekdays: sourceBill.totalMonthWeekdays,
+    source: {
+      customerId: sourceCustomer.id,
+      customerName: sourceCustomer.name,
+      startDate: sourceCustomer.startDate,
+      endDate: sourceCustomer.endDate,
+      eligibleWeekdays: sourceBill.totalEligibleWeekdays,
+      pausedWeekdays: sourceBill.pausedWeekdaysCount,
+      deliveredWeekdays: sourceBill.deliveredWeekdaysCount,
+      billedAmount: sourceBill.billedAmount,
+      customerSavings: sourceBill.customerSavings
+    },
+    target: {
+      customerId: targetCustomer.id,
+      customerName: targetCustomer.name,
+      startDate: targetCustomer.startDate,
+      endDate: targetCustomer.endDate,
+      eligibleWeekdays: targetBill.totalEligibleWeekdays,
+      pausedWeekdays: targetBill.pausedWeekdaysCount,
+      deliveredWeekdays: targetBill.deliveredWeekdaysCount,
+      billedAmount: targetBill.billedAmount,
+      customerSavings: targetBill.customerSavings
+    },
+    splitSummary: {
+      totalDeliveredWeekdays,
+      totalBilledAmount: totalBilled,
+      totalSavingsAmount: totalSavings,
+      planPriceBalanced: Math.abs((totalBilled + totalSavings) - sourceBill.monthlyPlanPrice) < 0.05
+    }
+  };
+}
+

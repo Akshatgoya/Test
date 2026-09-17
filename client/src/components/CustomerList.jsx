@@ -10,7 +10,8 @@ import {
   Trash2, 
   AlertCircle,
   CheckCircle2,
-  CalendarDays
+  CalendarDays,
+  ArrowRightLeft
 } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters.js';
 
@@ -21,6 +22,7 @@ export default function CustomerList({
   onOpenPause,
   onOpenBill,
   onOpenCalendar,
+  onOpenTransfer,
   onDeleteCustomer,
   currency = '₹',
   searchQuery
@@ -142,6 +144,16 @@ export default function CustomerList({
                           <span className={`diet-pill ${getDietClass(cust.dietary)}`}>
                             {cust.dietary || 'Veg'}
                           </span>
+                          {cust.transferredTo && (
+                            <span className="badge badge-warning" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                              Transferred
+                            </span>
+                          )}
+                          {cust.transferredFrom && (
+                            <span className="badge badge-accent" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                              Inherited
+                            </span>
+                          )}
                         </div>
                         <div className="cust-address" title={cust.address}>
                           <MapPin size={12} style={{ display: 'inline', marginRight: 3 }} />
@@ -221,6 +233,18 @@ export default function CustomerList({
                         >
                           <PauseCircle size={15} style={{ color: 'var(--paused-orange)' }} />
                           <span>Pause / Resume</span>
+                        </button>
+
+                        {/* Level 2 Twist: Transfer Subscription Button */}
+                        <button
+                          className="btn-secondary btn-twist-action"
+                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.8rem' }}
+                          onClick={() => onOpenTransfer && onOpenTransfer(cust)}
+                          title="Transfer subscription mid-cycle to another customer"
+                          id={`btn-transfer-${cust.id}`}
+                        >
+                          <ArrowRightLeft size={14} style={{ color: 'var(--primary)' }} />
+                          <span>Transfer</span>
                         </button>
 
                         {/* View Pro-Rated Bill Button */}

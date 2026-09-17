@@ -10,6 +10,9 @@ import BillModal from './components/BillModal.jsx';
 import CalendarView from './components/CalendarView.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import PaymentModal from './components/PaymentModal.jsx';
+import ClockOutboxModal from './components/ClockOutboxModal.jsx';
+import TransferModal from './components/TransferModal.jsx';
+import ImportModal from './components/ImportModal.jsx';
 import { api } from './utils/api.js';
 import { Users, Utensils, Receipt, CheckCircle2 } from 'lucide-react';
 
@@ -33,6 +36,11 @@ export default function App() {
   const [billModalCustomer, setBillModalCustomer] = useState(null);
   const [calendarModalCustomer, setCalendarModalCustomer] = useState(null);
   const [paymentModalData, setPaymentModalData] = useState(null); // { customer, billData }
+
+  // New Twist Modals
+  const [clockModalOpen, setClockModalOpen] = useState(false);
+  const [transferModalCustomer, setTransferModalCustomer] = useState(null);
+  const [importModalOpen, setImportModalOpen] = useState(false);
 
   // Toast feedback
   const [toastMessage, setToastMessage] = useState(null);
@@ -163,6 +171,8 @@ export default function App() {
         setSearchQuery={setSearchQuery}
         onOpenSubscribe={() => setSubscribeModalOpen(true)}
         onOpenSettings={() => setSettingsModalOpen(true)}
+        onOpenClock={() => setClockModalOpen(true)}
+        onOpenImport={() => setImportModalOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
@@ -218,6 +228,7 @@ export default function App() {
             onOpenPause={(cust) => setPauseModalCustomer(cust)}
             onOpenBill={(cust) => setBillModalCustomer(cust)}
             onOpenCalendar={(cust) => setCalendarModalCustomer(cust)}
+            onOpenTransfer={(cust) => setTransferModalCustomer(cust)}
             onDeleteCustomer={handleDeleteCustomer}
             currency={config?.currency || '₹'}
             searchQuery={searchQuery}
@@ -300,6 +311,37 @@ export default function App() {
           onSaveConfig={handleSaveConfig}
         />
       )}
+
+      {/* Level 1 Twist: Clock & Morning Notifications Outbox */}
+      <ClockOutboxModal
+        isOpen={clockModalOpen}
+        onClose={() => setClockModalOpen(false)}
+        onDateChanged={async (date) => {
+          showToast(`🌅 Clock updated to ${date}`);
+          await loadInitialData();
+        }}
+      />
+
+      {/* Level 2 Twist: Mid-Cycle Subscription Transfer */}
+      <TransferModal
+        isOpen={!!transferModalCustomer}
+        customer={transferModalCustomer}
+        onClose={() => setTransferModalCustomer(null)}
+        onTransferSuccess={async (res) => {
+          showToast(`🔄 Subscription transferred from ${res.sourceCustomer.name} to ${res.targetCustomer.name}!`);
+          await loadInitialData();
+        }}
+      />
+
+      {/* Level 3 Twist: Messy Data Importer */}
+      <ImportModal
+        isOpen={importModalOpen}
+        onClose={() => setImportModalOpen(false)}
+        onImportSuccess={async (report) => {
+          showToast(`📥 Ingested ${report.imported?.length || 0} subscriptions!`);
+          await loadInitialData();
+        }}
+      />
 
       {/* Toast Notification */}
       {toastMessage && (

@@ -3,9 +3,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import {
   formatDateStr,
+  parseDate,
   getCustomerStatusForDate,
-  calculateCustomerMonthlyBill
+  calculateCustomerMonthlyBill,
+  calculateTransferSplit
 } from './billingEngine.js';
+import { processMorningClockNotifications } from './notificationEngine.js';
+import { importMessyCustomers } from './importEngine.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -232,11 +236,15 @@ class Database {
       if (fs.existsSync(DB_FILE)) {
         const raw = fs.readFileSync(DB_FILE, 'utf-8');
         this.data = JSON.parse(raw);
+        if (!this.data.outbox) this.data.outbox = [];
+        if (!this.data.systemClock) this.data.systemClock = getTodayStr();
       } else {
         this.data = {
           config: INITIAL_CONFIG,
           plans: INITIAL_PLANS,
-          customers: INITIAL_CUSTOMERS
+          customers: INITIAL_CUSTOMERS,
+          outbox: [],
+          systemClock: getTodayStr()
         };
         this.save();
       }
@@ -245,7 +253,9 @@ class Database {
       this.data = {
         config: INITIAL_CONFIG,
         plans: INITIAL_PLANS,
-        customers: INITIAL_CUSTOMERS
+        customers: INITIAL_CUSTOMERS,
+        outbox: [],
+        systemClock: getTodayStr()
       };
     }
   }
@@ -553,6 +563,180 @@ class Database {
       pausedList
     };
   }
+
+  // --- RAW DATA ACCESS & DIRECT INSERT ---
+  getRawCustomers() {
+    return this.data.customers;
+  }
+
+  createCustomerDirect(customerData) {
+    this.data.customers.unshift(customerData);
+    this.save();
+    return customerData;
+  }
+
+  // --- NOTIFICATION OUTBOX & SYSTEM CLOCK (LEVEL 1 - T1) ---
+  getOutbox(filters = {}) {
+    if (!this.data.outbox) this.data.outbox = [];
+    let list = [...this.data.outbox];
+
+    if (filters.date) {
+      list = list.filter(m => m.date === filters.date);
+    }
+    if (filters.customerId) {
+      list = list.filter(m => m.customerId === filters.customerId || m.recipientId === filters.customerId);
+    }
+    if (filters.type) {
+      list = list.filter(m => m.type === filters.type);
+    }
+    return list;
+  }
+
+  addOutboxMessage(message) {
+    if (!this.data.outbox) this.data.outbox = [];
+    this.data.outbox.unshift(message);
+    this.save();
+    return message;
+  }
+
+  clearOutbox() {
+    this.data.outbox = [];
+    this.save();
+    return { success: true, message: 'Outbox cleared' };
+  }
+
+  getClock() {
+    return {
+      currentDate: this.data.systemClock || getTodayStr()
+    };
+  }
+
+  advanceClock(options = {}) {
+    let targetDate;
+    if (options && options.date) {
+      targetDate = options.date;
+    } else if (options && options.advanceDays) {
+      const baseDate = parseDate(this.data.systemClock || getTodayStr());
+      baseDate.setDate(baseDate.getDate() + Number(options.advanceDays));
+      targetDate = formatDateStr(baseDate.getFullYear(), baseDate.getMonth() + 1, baseDate.getDate());
+    } else if (this.data.systemClock) {
+      const baseDate = parseDate(this.data.systemClock);
+      baseDate.setDate(baseDate.getDate() + 1);
+      targetDate = formatDateStr(baseDate.getFullYear(), baseDate.getMonth() + 1, baseDate.getDate());
+    } else {
+      targetDate = getTodayStr();
+    }
+
+    this.data.systemClock = targetDate;
+    
+    // Process morning notifications for all active non-paused customers
+    const result = processMorningClockNotifications(this, targetDate);
+    this.save();
+
+    return {
+      date: targetDate,
+      isWeekday: result.isWeekday,
+      dispatchedCount: result.dispatchedCount,
+      notifications: result.notifications,
+      totalOutboxMessages: this.data.outbox ? this.data.outbox.length : 0
+    };
+  }
+
+  // --- SUBSCRIPTION TRANSFER & MID-CYCLE SPLIT (LEVEL 2 - T6) ---
+  transferSubscription(sourceCustomerId, { effectiveDate, targetCustomerId, targetCustomerData }) {
+    const sourceCustomer = this.data.customers.find(c => c.id === sourceCustomerId);
+    if (!sourceCustomer) {
+      throw new Error(`Source customer with ID ${sourceCustomerId} not found`);
+    }
+
+    if (!effectiveDate) {
+      throw new Error('Effective date is required for subscription transfer');
+    }
+
+    // Calculate day before effective date for source customer's endDate
+    const effDateObj = parseDate(effectiveDate);
+    const dayBeforeObj = new Date(effDateObj);
+    dayBeforeObj.setDate(dayBeforeObj.getDate() - 1);
+    const dayBeforeStr = formatDateStr(
+      dayBeforeObj.getFullYear(),
+      dayBeforeObj.getMonth() + 1,
+      dayBeforeObj.getDate()
+    );
+
+    const sourceOriginalEndDate = sourceCustomer.endDate || formatDateStr(
+      effDateObj.getFullYear(),
+      effDateObj.getMonth() + 1,
+      new Date(effDateObj.getFullYear(), effDateObj.getMonth() + 1, 0).getDate()
+    );
+
+    let targetCustomer = null;
+    if (targetCustomerId) {
+      targetCustomer = this.data.customers.find(c => c.id === targetCustomerId);
+      if (!targetCustomer) {
+        throw new Error(`Target customer with ID ${targetCustomerId} not found`);
+      }
+      targetCustomer.planId = sourceCustomer.planId;
+      targetCustomer.planName = sourceCustomer.planName;
+      targetCustomer.planMonthlyPrice = sourceCustomer.planMonthlyPrice;
+      targetCustomer.startDate = effectiveDate;
+      targetCustomer.endDate = sourceOriginalEndDate;
+      targetCustomer.transferredFrom = sourceCustomer.id;
+      targetCustomer.transferEffectiveDate = effectiveDate;
+    } else if (targetCustomerData) {
+      const plan = this.data.plans.find(p => p.id === sourceCustomer.planId) || this.data.plans[0];
+      targetCustomer = {
+        id: `cust_${Date.now()}_transferred`,
+        name: (targetCustomerData.name || 'Transferred Customer').trim(),
+        phone: (targetCustomerData.phone || '').replace(/[^0-9+]/g, '').trim(),
+        email: (targetCustomerData.email || '').trim(),
+        address: (targetCustomerData.address || sourceCustomer.address || '').trim(),
+        planId: sourceCustomer.planId,
+        planName: sourceCustomer.planName,
+        planMonthlyPrice: sourceCustomer.planMonthlyPrice,
+        dietary: targetCustomerData.dietary || sourceCustomer.dietary || 'Pure Veg',
+        deliverySlot: targetCustomerData.deliverySlot || sourceCustomer.deliverySlot || '12:30 PM',
+        notes: targetCustomerData.notes || `Transferred from ${sourceCustomer.name} on ${effectiveDate}`,
+        startDate: effectiveDate,
+        endDate: sourceOriginalEndDate,
+        transferredFrom: sourceCustomer.id,
+        transferEffectiveDate: effectiveDate,
+        pauses: [],
+        payments: {}
+      };
+      this.data.customers.unshift(targetCustomer);
+    } else {
+      throw new Error('Either targetCustomerId or targetCustomerData must be provided');
+    }
+
+    // Update source customer's endDate
+    sourceCustomer.endDate = dayBeforeStr;
+    sourceCustomer.transferredTo = targetCustomer.id;
+    sourceCustomer.transferEffectiveDate = effectiveDate;
+
+    this.save();
+
+    // Compute split billing for verification
+    const year = effDateObj.getFullYear();
+    const month = effDateObj.getMonth() + 1;
+    const splitDetails = calculateTransferSplit(sourceCustomer, targetCustomer, year, month);
+
+    return {
+      success: true,
+      message: `Subscription successfully transferred from ${sourceCustomer.name} to ${targetCustomer.name} effective ${effectiveDate}`,
+      effectiveDate,
+      sourceCustomer: this.getCustomerById(sourceCustomer.id),
+      targetCustomer: this.getCustomerById(targetCustomer.id),
+      splitDetails
+    };
+  }
+
+  // --- MESSY DATA IMPORT (LEVEL 3 - T4) ---
+  importMessyData(input) {
+    const result = importMessyCustomers(input, this);
+    this.save();
+    return result;
+  }
 }
 
 export const db = new Database();
+

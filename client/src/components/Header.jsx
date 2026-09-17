@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, X, Plus, Settings, Utensils, Moon, Sun } from 'lucide-react';
+import { Search, X, Plus, Settings, Utensils, Moon, Sun, Clock, UploadCloud } from 'lucide-react';
 
 export default function Header({
   config,
@@ -7,6 +7,8 @@ export default function Header({
   setSearchQuery,
   onOpenSubscribe,
   onOpenSettings,
+  onOpenClock,
+  onOpenImport,
   theme,
   onToggleTheme
 }) {
@@ -50,6 +52,28 @@ export default function Header({
 
         {/* Actions */}
         <div className="header-actions">
+          {/* Level 1 Twist: Clock & Outbox */}
+          <button
+            className="btn-header-twist btn-twist-clock"
+            onClick={onOpenClock}
+            title="System Clock & Morning Notification Outbox (Level 1 Twist)"
+            id="btn-clock-outbox"
+          >
+            <Clock size={16} />
+            <span>Clock & Outbox</span>
+          </button>
+
+          {/* Level 3 Twist: Import Messy Data */}
+          <button
+            className="btn-header-twist btn-twist-import"
+            onClick={onOpenImport}
+            title="Import Messy Customer List (Level 3 Twist)"
+            id="btn-import-data"
+          >
+            <UploadCloud size={16} />
+            <span>Import Data</span>
+          </button>
+
           {/* Theme Toggle */}
           <button
             className="btn-icon"
@@ -82,3 +106,4 @@ export default function Header({
     </header>
   );
 }
+
