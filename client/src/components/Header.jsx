@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, X, Plus, Settings, Utensils, Moon, Sun, Clock, UploadCloud } from 'lucide-react';
+import { Search, X, Plus, Settings, Utensils, Moon, Sun, Clock, UploadCloud, LogIn } from 'lucide-react';
 
 export default function Header({
   config,
@@ -9,6 +9,7 @@ export default function Header({
   onOpenSettings,
   onOpenClock,
   onOpenImport,
+  onOpenLogin,
   theme,
   onToggleTheme
 }) {
@@ -84,13 +85,25 @@ export default function Header({
             {theme === 'dark' ? <Sun size={18} style={{ color: '#FBBF24' }} /> : <Moon size={18} />}
           </button>
 
+          {/* Customer Account Login / Portal */}
+          <button
+            className="btn-header-login"
+            onClick={onOpenLogin}
+            title="Log in to your customer account (phone lookup portal)"
+            id="btn-customer-login"
+          >
+            <LogIn size={16} style={{ color: '#818CF8' }} />
+            <span>Customer Login</span>
+          </button>
+
           <button
             className="btn-primary"
             onClick={onOpenSubscribe}
             id="btn-add-customer"
+            title="Create customer account and subscribe to monthly tiffin plan"
           >
             <Plus size={18} />
-            <span>New Subscriber</span>
+            <span>Create Account</span>
           </button>
 
           <button

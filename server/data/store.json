@@ -220,121 +220,7 @@
   ],
   "outbox": [
     {
-      "id": "notif_1789641737443_v4vkw",
-      "date": "2026-09-01",
-      "customerId": "cust_106",
-      "recipientId": "cust_106",
-      "recipientName": "Manish Verma",
-      "customerName": "Manish Verma",
-      "to": "9167234567",
-      "phone": "9167234567",
-      "type": "delivery_reminder",
-      "channel": "SMS",
-      "planName": "Deluxe Homestyle Feast",
-      "deliverySlot": "12:45 PM",
-      "address": "A-204, Sea Queen Bay, Kharghar Sector 10",
-      "message": "Good morning Manish Verma! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-01) at 12:45 PM.",
-      "body": "Good morning Manish Verma! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-01) at 12:45 PM.",
-      "status": "sent",
-      "sentAt": "2026-09-17T10:42:17.443Z"
-    },
-    {
-      "id": "notif_1789641737437_39eur",
-      "date": "2026-09-01",
-      "customerId": "cust_105",
-      "recipientId": "cust_105",
-      "recipientName": "Dr. Sneha Kulkarni",
-      "customerName": "Dr. Sneha Kulkarni",
-      "to": "9821098765",
-      "phone": "9821098765",
-      "type": "delivery_reminder",
-      "channel": "SMS",
-      "planName": "Classic Veg Thali",
-      "deliverySlot": "12:30 PM",
-      "address": "Consulting Room 3, Apollo Clinic, Seawoods",
-      "message": "Good morning Dr. Sneha Kulkarni! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-01) at 12:30 PM.",
-      "body": "Good morning Dr. Sneha Kulkarni! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-01) at 12:30 PM.",
-      "status": "sent",
-      "sentAt": "2026-09-17T10:42:17.437Z"
-    },
-    {
-      "id": "notif_1789641737431_ntto9",
-      "date": "2026-09-01",
-      "customerId": "cust_104",
-      "recipientId": "cust_104",
-      "recipientName": "Rohan Mehra",
-      "customerName": "Rohan Mehra",
-      "to": "9920556677",
-      "phone": "9920556677",
-      "type": "delivery_reminder",
-      "channel": "SMS",
-      "planName": "Executive High-Protein Non-Veg",
-      "deliverySlot": "1:15 PM",
-      "address": "Cabin 14, WeWork Cybercity, Turbhe",
-      "message": "Good morning Rohan Mehra! Your Executive High-Protein Non-Veg tiffin is scheduled for delivery today (2026-09-01) at 1:15 PM.",
-      "body": "Good morning Rohan Mehra! Your Executive High-Protein Non-Veg tiffin is scheduled for delivery today (2026-09-01) at 1:15 PM.",
-      "status": "sent",
-      "sentAt": "2026-09-17T10:42:17.431Z"
-    },
-    {
-      "id": "notif_1789641737424_htiom",
-      "date": "2026-09-01",
-      "customerId": "cust_103",
-      "recipientId": "cust_103",
-      "recipientName": "Kavita Jha",
-      "customerName": "Kavita Jha",
-      "to": "9769012345",
-      "phone": "9769012345",
-      "type": "delivery_reminder",
-      "channel": "SMS",
-      "planName": "Jain Satvik Meal",
-      "deliverySlot": "1:00 PM",
-      "address": "C-701, Odyssey Heights, Palm Beach Road, Sanpada",
-      "message": "Good morning Kavita Jha! Your Jain Satvik Meal tiffin is scheduled for delivery today (2026-09-01) at 1:00 PM.",
-      "body": "Good morning Kavita Jha! Your Jain Satvik Meal tiffin is scheduled for delivery today (2026-09-01) at 1:00 PM.",
-      "status": "sent",
-      "sentAt": "2026-09-17T10:42:17.424Z"
-    },
-    {
-      "id": "notif_1789641737423_0ogvq",
-      "date": "2026-09-01",
-      "customerId": "cust_102",
-      "recipientId": "cust_102",
-      "recipientName": "Priya Sundaram",
-      "customerName": "Priya Sundaram",
-      "to": "9833445566",
-      "phone": "9833445566",
-      "type": "delivery_reminder",
-      "channel": "SMS",
-      "planName": "Deluxe Homestyle Feast",
-      "deliverySlot": "12:45 PM",
-      "address": "B-12, Green Acres, Vashi Sector 9",
-      "message": "Good morning Priya Sundaram! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-01) at 12:45 PM.",
-      "body": "Good morning Priya Sundaram! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-01) at 12:45 PM.",
-      "status": "sent",
-      "sentAt": "2026-09-17T10:42:17.423Z"
-    },
-    {
-      "id": "notif_1789641737422_zoljl",
-      "date": "2026-09-01",
-      "customerId": "cust_101",
-      "recipientId": "cust_101",
-      "recipientName": "Aarav Patel",
-      "customerName": "Aarav Patel",
-      "to": "9820198201",
-      "phone": "9820198201",
-      "type": "delivery_reminder",
-      "channel": "SMS",
-      "planName": "Classic Veg Thali",
-      "deliverySlot": "12:30 PM",
-      "address": "Flat 402, Lotus Tower, Mindspace IT Park, Airoli",
-      "message": "Good morning Aarav Patel! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-01) at 12:30 PM.",
-      "body": "Good morning Aarav Patel! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-01) at 12:30 PM.",
-      "status": "sent",
-      "sentAt": "2026-09-17T10:42:17.422Z"
-    },
-    {
-      "id": "notif_1789641676397_s7ft6",
+      "id": "notif_1789642937069_wx5tv",
       "date": "2026-09-02",
       "customerId": "cust_106",
       "recipientId": "cust_106",
@@ -350,10 +236,10 @@
       "message": "Good morning Manish Verma! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-02) at 12:45 PM.",
       "body": "Good morning Manish Verma! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-02) at 12:45 PM.",
       "status": "sent",
-      "sentAt": "2026-09-17T10:41:16.397Z"
+      "sentAt": "2026-09-17T11:02:17.069Z"
     },
     {
-      "id": "notif_1789641676396_xara6",
+      "id": "notif_1789642937068_ez743",
       "date": "2026-09-02",
       "customerId": "cust_105",
       "recipientId": "cust_105",
@@ -369,10 +255,10 @@
       "message": "Good morning Dr. Sneha Kulkarni! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-02) at 12:30 PM.",
       "body": "Good morning Dr. Sneha Kulkarni! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-02) at 12:30 PM.",
       "status": "sent",
-      "sentAt": "2026-09-17T10:41:16.396Z"
+      "sentAt": "2026-09-17T11:02:17.068Z"
     },
     {
-      "id": "notif_1789641676395_hdqc1",
+      "id": "notif_1789642937051_w1l12",
       "date": "2026-09-02",
       "customerId": "cust_104",
       "recipientId": "cust_104",
@@ -388,10 +274,10 @@
       "message": "Good morning Rohan Mehra! Your Executive High-Protein Non-Veg tiffin is scheduled for delivery today (2026-09-02) at 1:15 PM.",
       "body": "Good morning Rohan Mehra! Your Executive High-Protein Non-Veg tiffin is scheduled for delivery today (2026-09-02) at 1:15 PM.",
       "status": "sent",
-      "sentAt": "2026-09-17T10:41:16.395Z"
+      "sentAt": "2026-09-17T11:02:17.051Z"
     },
     {
-      "id": "notif_1789641676392_72n5h",
+      "id": "notif_1789642937050_62zpe",
       "date": "2026-09-02",
       "customerId": "cust_103",
       "recipientId": "cust_103",
@@ -407,10 +293,10 @@
       "message": "Good morning Kavita Jha! Your Jain Satvik Meal tiffin is scheduled for delivery today (2026-09-02) at 1:00 PM.",
       "body": "Good morning Kavita Jha! Your Jain Satvik Meal tiffin is scheduled for delivery today (2026-09-02) at 1:00 PM.",
       "status": "sent",
-      "sentAt": "2026-09-17T10:41:16.392Z"
+      "sentAt": "2026-09-17T11:02:17.050Z"
     },
     {
-      "id": "notif_1789641676381_adi9w",
+      "id": "notif_1789642937049_y11wt",
       "date": "2026-09-02",
       "customerId": "cust_102",
       "recipientId": "cust_102",
@@ -426,10 +312,10 @@
       "message": "Good morning Priya Sundaram! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-02) at 12:45 PM.",
       "body": "Good morning Priya Sundaram! Your Deluxe Homestyle Feast tiffin is scheduled for delivery today (2026-09-02) at 12:45 PM.",
       "status": "sent",
-      "sentAt": "2026-09-17T10:41:16.381Z"
+      "sentAt": "2026-09-17T11:02:17.049Z"
     },
     {
-      "id": "notif_1789641676372_8g2cd",
+      "id": "notif_1789642937034_o2gu8",
       "date": "2026-09-02",
       "customerId": "cust_101",
       "recipientId": "cust_101",
@@ -445,8 +331,8 @@
       "message": "Good morning Aarav Patel! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-02) at 12:30 PM.",
       "body": "Good morning Aarav Patel! Your Classic Veg Thali tiffin is scheduled for delivery today (2026-09-02) at 12:30 PM.",
       "status": "sent",
-      "sentAt": "2026-09-17T10:41:16.372Z"
+      "sentAt": "2026-09-17T11:02:17.034Z"
     }
   ],
-  "systemClock": "2026-09-01"
+  "systemClock": "2026-09-02"
 }

@@ -7,8 +7,17 @@ export default function SubscribeModal({
   plans = [],
   onClose,
   onSubscribe,
+  onSwitchToLogin,
   currency = '₹'
 }) {
+  const getTodayStr = () => {
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, '0');
+    const d = String(today.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -16,15 +25,9 @@ export default function SubscribeModal({
     address: '',
     planId: plans[0]?.id || '',
     dietary: 'Pure Veg',
-    deliverySlot: '12:30 PM',
+    deliverySlot: '12:30 PM - 1:15 PM',
     notes: '',
-    startDate: () => {
-      const today = new Date();
-      const y = today.getFullYear();
-      const m = String(today.getMonth() + 1).padStart(2, '0');
-      const d = String(today.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
+    startDate: getTodayStr()
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,17 +70,35 @@ export default function SubscribeModal({
         {/* Header */}
         <div className="modal-header">
           <div className="modal-title">
-            <h3>New Customer Subscription</h3>
-            <p>Onboard a subscriber to weekday lunch delivery</p>
+            <h3>Create Customer Account & Subscription</h3>
+            <p>Register an account and activate your weekday homestyle lunch delivery</p>
           </div>
           <button className="btn-icon" onClick={onClose} title="Close">
             <X size={20} />
           </button>
         </div>
 
+
         {/* Form */}
         <form onSubmit={handleSubmit} id="subscribe-form">
           <div className="modal-body">
+            {/* Quick Switch to Login */}
+            {onSwitchToLogin && (
+              <div className="account-switch-banner">
+                <span>Already have an active subscription?</span>
+                <button
+                  type="button"
+                  className="btn-link-highlight"
+                  onClick={() => {
+                    onClose();
+                    onSwitchToLogin();
+                  }}
+                >
+                  Log in to Customer Account &rarr;
+                </button>
+              </div>
+            )}
+
             <div className="form-row">
               <div className="form-group">
                 <label className="form-label">Full Name *</label>
@@ -132,21 +153,21 @@ export default function SubscribeModal({
                       style={{
                         padding: '0.85rem',
                         borderRadius: 'var(--radius-md)',
-                        border: isSelected ? '2px solid var(--primary)' : '1px solid var(--neutral-300)',
-                        background: isSelected ? 'var(--primary-light)' : '#ffffff',
+                        border: isSelected ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                        background: isSelected ? 'var(--primary-light)' : 'var(--bg-surface-elevated)',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease'
                       }}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontWeight: 700, color: 'var(--neutral-900)', fontSize: '0.9rem' }}>
+                        <span style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.9rem' }}>
                           {p.name}
                         </span>
                         <span style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '0.95rem' }}>
                           {formatCurrency(p.monthlyPrice, currency)}
                         </span>
                       </div>
-                      <p style={{ fontSize: '0.75rem', color: 'var(--neutral-500)', marginTop: '4px' }}>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.35 }}>
                         {p.description}
                       </p>
                     </div>
@@ -224,7 +245,7 @@ export default function SubscribeModal({
               id="btn-submit-subscriber"
             >
               <UserPlus size={18} />
-              <span>{isSubmitting ? 'Subscribing...' : 'Activate Monthly Subscription'}</span>
+              <span>{isSubmitting ? 'Creating Account...' : 'Create Account & Activate Subscription'}</span>
             </button>
           </div>
         </form>

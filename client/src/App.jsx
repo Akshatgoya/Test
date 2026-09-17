@@ -13,6 +13,7 @@ import PaymentModal from './components/PaymentModal.jsx';
 import ClockOutboxModal from './components/ClockOutboxModal.jsx';
 import TransferModal from './components/TransferModal.jsx';
 import ImportModal from './components/ImportModal.jsx';
+import LoginModal from './components/LoginModal.jsx';
 import { api } from './utils/api.js';
 import { Users, Utensils, Receipt, CheckCircle2 } from 'lucide-react';
 
@@ -37,10 +38,11 @@ export default function App() {
   const [calendarModalCustomer, setCalendarModalCustomer] = useState(null);
   const [paymentModalData, setPaymentModalData] = useState(null); // { customer, billData }
 
-  // New Twist Modals
+  // New Twist Modals & Account Auth
   const [clockModalOpen, setClockModalOpen] = useState(false);
   const [transferModalCustomer, setTransferModalCustomer] = useState(null);
   const [importModalOpen, setImportModalOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   // Toast feedback
   const [toastMessage, setToastMessage] = useState(null);
@@ -173,6 +175,7 @@ export default function App() {
         onOpenSettings={() => setSettingsModalOpen(true)}
         onOpenClock={() => setClockModalOpen(true)}
         onOpenImport={() => setImportModalOpen(true)}
+        onOpenLogin={() => setLoginModalOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
@@ -258,6 +261,10 @@ export default function App() {
           plans={plans}
           onClose={() => setSubscribeModalOpen(false)}
           onSubscribe={handleSubscribe}
+          onSwitchToLogin={() => {
+            setSubscribeModalOpen(false);
+            setLoginModalOpen(true);
+          }}
           currency={config?.currency || '₹'}
         />
       )}
@@ -341,6 +348,30 @@ export default function App() {
           showToast(`📥 Ingested ${report.imported?.length || 0} subscriptions!`);
           await loadInitialData();
         }}
+      />
+
+      {/* Customer Account Login & Portal Modal */}
+      <LoginModal
+        isOpen={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        customers={customers}
+        onOpenCreateAccount={() => {
+          setLoginModalOpen(false);
+          setSubscribeModalOpen(true);
+        }}
+        onOpenPause={(cust) => {
+          setLoginModalOpen(false);
+          setPauseModalCustomer(cust);
+        }}
+        onOpenBill={(cust) => {
+          setLoginModalOpen(false);
+          setBillModalCustomer(cust);
+        }}
+        onOpenCalendar={(cust) => {
+          setLoginModalOpen(false);
+          setCalendarModalCustomer(cust);
+        }}
+        currency={config?.currency || '₹'}
       />
 
       {/* Toast Notification */}
